@@ -18,21 +18,21 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
         public function __construct() {
             $this->id = 'venmo-pay';
             // payment gateway plugin ID
-            $this->icon = WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_35.png';
+            $this->icon = esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_35.png');
             // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             // in case you need a custom form
             $this->method_title = 'Venmo';
-            $this->method_description = '<p><a href="https://venmo.com/business/start/" target="_blank">Pay with Venmo</a> is the official integration for PayPal merchants.</p>
+            $this->method_description = '<p><a href="https://venmo.com/business/start/" target="_blank">Pay with Venmo</a> is an unofficial integration for PayPal merchants.</p>
 			<p>You need to connect an existing PayPal business account or create one to fully integrate this payment method.</p>
-			<p>See how the <a href="' . admin_url( 'admin.php?page=wc_venmo_compared' ) . '">Venmo Pay payment method compares to the Venmo Link payment method</a></p>' . '<p><a href="' . admin_url( 'admin.php?page=wc_venmo_compared' ) . '"><img class="shadow" src="' . WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_pay_checkout.jpg' . '" width="auto" height="200" alt="Venmo Link on the checkout page" /></a></p>';
+			<p>See how the <a href="' . admin_url( 'admin.php?page=wc_venmo_compared' ) . '">Venmo Pay payment method compares to the Venmo Link payment method</a></p>' . '<p><a href="' . admin_url( 'admin.php?page=wc_venmo_compared' ) . '"><img class="shadow" src="' . esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_pay_checkout.jpg') . '" width="auto" height="200" alt="Venmo Link on the checkout page" /></a></p>';
             // will be displayed on the options page
             global $venmo_fs;
             $upgrade_url = venmo_fs()->get_upgrade_url();
             $this->init_settings();
             $this->enabled = $this->get_option( 'enabled' );
             $this->title = ( $this->get_option( 'checkout_title' ) ? $this->get_option( 'checkout_title' ) : $this->method_title );
-            $this->description = ( $this->get_option( 'checkout_description' ) ? $this->get_option( 'checkout_description' ) : wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', WCVENMO_PLUGIN_TEXT_DOMAIN ) ) );
+            $this->description = ( $this->get_option( 'checkout_description' ) ? $this->get_option( 'checkout_description' ) : wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', 'momo-venmo' ) ) );
             $this->VENMO_Client_Username = $this->get_option( 'VENMO_Client_Username' );
             $this->VENMO_Client_Id = $this->get_option( 'VENMO_Client_Id' );
             $this->VENMO_Client_Secret = $this->get_option( 'VENMO_Client_Secret' );
@@ -128,8 +128,8 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                     'title'       => 'Checkout Notice' . $pro,
                     'type'        => 'textarea',
                     'description' => 'This is the text a customer sees in the payment gateway box on the checkout page.' . $edit_with_pro,
-                    'default'     => wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', WCVENMO_PLUGIN_TEXT_DOMAIN ) ),
-                    'placeholder' => wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', WCVENMO_PLUGIN_TEXT_DOMAIN ) ),
+                    'default'     => wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', 'momo-venmo' ) ),
+                    'placeholder' => wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', 'momo-venmo' ) ),
                     'css'         => 'width:80%; pointer-events: none;',
                     'class'       => 'disabled',
                 ),
@@ -159,25 +159,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
 
         // wc_add_notice & log
         // protected function wcvp_woo_notice( $message, $status = 'error', $level = 'info' ) {}
-        protected function wcvp_log( $message, $level = 'info' ) {
-            // logs at admin.php?page=wc-status&tab=logs
-            if ( !empty( $message ) && $this->enable_debug == 'yes' && venmo_fs()->is_plan__premium_only( 'pro' ) ) {
-                $logger = wc_get_logger();
-                // $logger->debug( 'Detailed debug information', $context );
-                // $logger->info( 'Interesting events', $context );
-                // $logger->notice( 'Normal but significant events', $context );
-                // $logger->warning( 'Exceptional occurrences that are not errors', $context );
-                // $logger->error( 'Runtime errors that do not require immediate', $context );
-                // $logger->critical( 'Critical conditions', $context );
-                // $logger->alert( 'Action must be taken immediately', $context );
-                // $logger->emergency( 'System is unusable', $context );
-                // // $context may hold arbitrary data.
-                // // If you provide a "source", it will be used to group your logs
-                $logger->log( $level, wp_strip_all_tags( wp_kses_post( $message ) ), array(
-                    'source' => $this->id,
-                ) );
-            }
-        }
+        protected function wcvp_log( $message, $level = 'info' ) { return; }
 
         /**
          * Check if this gateway is available in the user's country based on currency.
@@ -212,15 +194,15 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
             echo '<fieldset id="wc-', esc_attr( $this->id ), '-form" data-plugin="' . wp_kses_post( WCVENMO_PLUGIN_VERSION ) . '">';
             do_action( 'woocommerce_form_start', $this->id );
             if ( empty( $this->VENMO_Client_Id ) ) {
-                echo '<p>' . wp_kses_post( __( 'Please finish setting up this payment method or contact the admin to do so.', WCVENMO_PLUGIN_TEXT_DOMAIN ) ) . '</p>';
+                echo '<p>' . wp_kses_post( __( 'Please finish setting up this payment method or contact the admin to do so.', 'momo-venmo' ) ) . '</p>';
                 do_action( 'woocommerce_form_end', $this->id );
                 echo '<input name="do_not_checkout" type="hidden" value="true"><div class="clear"></div></fieldset>';
                 return;
             }
             if ( !empty( $this->checkout_description ) ) {
-                echo '<p>' . wp_kses_post( __( $this->checkout_description, WCVENMO_PLUGIN_TEXT_DOMAIN ) ) . '</p>';
+                echo '<p>' . wp_kses_post( sprintf( __( '%s', 'momo-venmo' ), $this->checkout_description ) ). '</p>';
             } else {
-                echo '<p>' . wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', WCVENMO_PLUGIN_TEXT_DOMAIN ) ) . '</p>';
+                echo '<p>' . wp_kses_post( __( 'Click the button below and follow the instructions to pay with Venmo', 'momo-venmo' ) ) . '</p>';
             }
             // $debug = '
             // <input type="hidden" id="wc_venmo_orderID" name="wc_venmo_orderID" value="23G89967CW5479212">
@@ -252,20 +234,23 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
 
         // validate payment token
         public function validate_fields() {
-            $wc_venmo_paypal_data = ( isset( $_POST['wc_venmo_paypal_data'] ) ? sanitize_text_field( trim( $_POST['wc_venmo_paypal_data'] ) ) : null );
-            if ( empty( $wc_venmo_paypal_data ) || strlen( $wc_venmo_paypal_data ) < 5 ) {
-                wc_add_notice( esc_html( __( 'Invalid PayPal Data. Please try again with Venmo or pay with debit/credit', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
-            }
-            $wc_venmo_orderID = ( isset( $_POST['wc_venmo_orderID'] ) ? sanitize_text_field( trim( $_POST['wc_venmo_orderID'] ) ) : null );
-            if ( empty( $wc_venmo_orderID ) || strlen( $wc_venmo_orderID ) < 3 ) {
-                wc_add_notice( esc_html( __( 'Invalid PayPal orderID. Please try again with Venmo or pay with debit/credit', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
-            }
-            $wc_venmo_authorizationID = ( isset( $_POST['wc_venmo_authorizationID'] ) ? sanitize_text_field( trim( $_POST['wc_venmo_authorizationID'] ) ) : null );
-            if ( empty( $wc_venmo_authorizationID ) || strlen( $wc_venmo_authorizationID ) < 3 ) {
-                wc_add_notice( esc_html( __( 'Invalid PayPal authorizationID. Please try again with Venmo or pay with debit/credit', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
+            if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
+                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
             }
             if ( isset( $_POST['do_not_checkout'] ) ) {
-                wc_add_notice( esc_html( __( 'Please try another payment method', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
+                wc_add_notice( esc_html( __( 'Please try another payment method', 'momo-venmo' ) ), 'error' );
+            }
+            $wc_venmo_paypal_data = ( isset( $_POST['wc_venmo_paypal_data'] ) ? sanitize_text_field( trim( wp_unslash($_POST['wc_venmo_paypal_data']) ) ) : null );
+            if ( empty( $wc_venmo_paypal_data ) || strlen( $wc_venmo_paypal_data ) < 5 ) {
+                wc_add_notice( esc_html( __( 'Invalid PayPal Data. Please try again with Venmo or pay with debit/credit', 'momo-venmo' ) ), 'error' );
+            }
+            $wc_venmo_orderID = ( isset( $_POST['wc_venmo_orderID'] ) ? sanitize_text_field( trim( wp_unslash($_POST['wc_venmo_orderID']) ) ) : null );
+            if ( empty( $wc_venmo_orderID ) || strlen( $wc_venmo_orderID ) < 3 ) {
+                wc_add_notice( esc_html( __( 'Invalid PayPal orderID. Please try again with Venmo or pay with debit/credit', 'momo-venmo' ) ), 'error' );
+            }
+            $wc_venmo_authorizationID = ( isset( $_POST['wc_venmo_authorizationID'] ) ? sanitize_text_field( trim( wp_unslash($_POST['wc_venmo_authorizationID']) ) ) : null );
+            if ( empty( $wc_venmo_authorizationID ) || strlen( $wc_venmo_authorizationID ) < 3 ) {
+                wc_add_notice( esc_html( __( 'Invalid PayPal authorizationID. Please try again with Venmo or pay with debit/credit', 'momo-venmo' ) ), 'error' );
             }
         }
 
@@ -278,7 +263,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
             if ( $order && $this->id === $order->get_payment_method() ) {
                 // $pp_receipt = $order->get_meta('pp_receipt');
                 // if ($pp_receipt) {
-                // 	$note = wp_kses_post( "<p>" . sprintf( __('Here is your <a href="%s" target="blank">PayPal receipt</a>', WCVENMO_PLUGIN_TEXT_DOMAIN), $pp_receipt ) . "</p>" );
+                // 	$note = wp_kses_post( "<p>" . sprintf( __('Here is your <a href="%s" target="blank">PayPal receipt</a>', 'momo-venmo'), $pp_receipt ) . "</p>" );
                 // 	echo $note;
                 // }
             }
@@ -295,6 +280,9 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
 
         // Process Order
         public function process_payment( $order_id ) {
+            if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
+                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
+            }
             try {
                 if ( !$order_id ) {
                     wc_add_notice( '<p>Something went terribly wrong.</p><p>Order information is missing</p>', 'error' );
@@ -310,15 +298,18 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                     $amount = $order->get_total();
                     $currency = $order->get_currency();
                     try {
-                        $wc_venmo_paypal_data = $_POST['wc_venmo_paypal_data'];
-                        $wc_venmo_paypal_data = ( $wc_venmo_paypal_data ? json_decode( $wc_venmo_paypal_data, true ) : null );
+                        // $wc_venmo_paypal_data = isset( $_POST['wc_venmo_paypal_data'] ) ? (array) $_POST['wc_venmo_paypal_data'] : array();
+                        // $wc_venmo_paypal_data = array_map( 'sanitize_text_field', $wc_venmo_paypal_data );
+                        // https://developer.wordpress.org/reference/functions/wp_kses_post_deep
+                        $wc_venmo_paypal_data = sanitize_text_field(trim(wp_unslash($_POST['wc_venmo_paypal_data'])));
+                        $wc_venmo_paypal_data = ( $wc_venmo_paypal_data ? wp_kses_post_deep(json_decode( $wc_venmo_paypal_data, true )) : null );
                         // $paymentid = sanitize_text_field(trim($wc_venmo_paypal_data["paymentID"])) ?? sanitize_text_field(trim($_POST['wc_venmo_orderID']));
                         // $payerid = sanitize_text_field(trim($wc_venmo_paypal_data["payerID"]));
                         $wc_venmo_orderID = ( $wc_venmo_paypal_data ? sanitize_text_field( trim( $wc_venmo_paypal_data["orderID"] ) ) : sanitize_text_field( trim( $_POST['wc_venmo_orderID'] ) ) );
                         $wc_venmo_authorizationID = ( $_POST['wc_venmo_authorizationID'] ? sanitize_text_field( trim( $_POST['wc_venmo_authorizationID'] ) ) : null );
                         if ( !$wc_venmo_authorizationID ) {
-                            wc_add_notice( " " . __( 'Invalid Pay with Venmo authorizationID. Please refresh and try again', WCVENMO_PLUGIN_TEXT_DOMAIN ), 'error' );
-                            $this->wcvp_log( "Checkout: Invalid authorizationID " . print_r( $_POST ), 'error' );
+                            wc_add_notice( " " . __( 'Invalid Pay with Venmo authorizationID. Please refresh and try again', 'momo-venmo' ), 'error' );
+                            $this->wcvp_log( "Checkout: Invalid authorizationID " . esc_html( json_encode( wp_kses_post_deep($_POST) ) ), 'error' );
                             return;
                         }
                         $ppl_response = wp_remote_post( "https://api.paypal.com/v2/payments/authorizations/{$wc_venmo_authorizationID}/capture", array(
@@ -370,7 +361,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                                     // https://www.paypal.com/activity/payment/***2X533851NC2084014
                                     $pp_receipt = "https://www.paypal.com/activity/payment/{$pp_id}";
                                     $order->add_meta_data( 'pp_receipt', $pp_receipt );
-                                    $note = wp_kses_post( "<p>" . sprintf( __( 'Here is the <a href="%s" target="blank">PayPal receipt</a>', WCVENMO_PLUGIN_TEXT_DOMAIN ), $pp_receipt ) . "</p>" );
+                                    $note = wp_kses_post( "<p>" . sprintf( __( 'Here is the <a href="%s" target="blank">PayPal receipt</a>', 'momo-venmo' ), $pp_receipt ) . "</p>" );
                                     $order->add_order_note( $note, true );
                                     // GET "https://api-m.paypal.com/v2/payments/captures/{$pp_id}";
                                     // 	$pp_endpoint = $payment_links[0]['href'];
@@ -378,7 +369,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                                     $order->add_meta_data( 'pp_endpoint', $pp_endpoint );
                                     $ppr_issue_refund = "https://www.paypal.com/activity/actions/refund/edit/{$pp_id}";
                                     $order->add_meta_data( 'ppr_issue_refund', $ppr_issue_refund );
-                                    $note = wp_kses_post( "<p>" . sprintf( __( 'To <a href="%s" target="blank">issue a refund, visit here</a>', WCVENMO_PLUGIN_TEXT_DOMAIN ), $ppr_issue_refund ) . "</p>" );
+                                    $note = wp_kses_post( "<p>" . sprintf( __( 'To <a href="%s" target="blank">issue a refund, visit here</a>', 'momo-venmo' ), $ppr_issue_refund ) . "</p>" );
                                     $order->add_order_note( $note, true );
                                     // POST "https://api-m.paypal.com/v2/payments/captures/{$pp_id}/refund";
                                     // 	$ppr_endpoint = $payment_links[1]['href'];
@@ -394,7 +385,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                                         $this->wcvp_log( "Checkout: {$result['name']} Error.\n" . json_encode( $result ), 'error' );
                                         return;
                                     } else {
-                                        wc_add_notice( " " . __( 'Pay with Venmo payment failed. Please refresh and try again', WCVENMO_PLUGIN_TEXT_DOMAIN ), 'error' );
+                                        wc_add_notice( " " . __( 'Pay with Venmo payment failed. Please refresh and try again', 'momo-venmo' ), 'error' );
                                         $this->wcvp_log( "Checkout: Pay with Venmo payment failed.\n" . json_encode( $result ), 'error' );
                                         return;
                                     }

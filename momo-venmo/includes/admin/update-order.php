@@ -15,7 +15,7 @@ $response_code = 426;
 $message .= wp_kses_post( $update_order );
 $message_array['update_order'] = wp_kses_post( $update_order );
 if ( $receipt_post_id ) {
-    $post_dump = print_r( $body, true );
+    $post_dump = wp_json_encode( $body, true );
     $receipt_post = get_post( $receipt_post_id );
     if ( $receipt_post ) {
         $receipt_post->post_title .= wp_kses_post( $post_title );

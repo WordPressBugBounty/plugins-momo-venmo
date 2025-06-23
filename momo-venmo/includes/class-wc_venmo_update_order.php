@@ -1,6 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if ( !class_exists( 'WC_Venmo_Update_Order' ) && class_exists( 'WC_Venmo_Gateway' ) ):
+#[\AllowDynamicProperties]
 class WC_Venmo_Update_Order extends WC_Venmo_Gateway {
 
   function register() {
@@ -13,8 +14,8 @@ class WC_Venmo_Update_Order extends WC_Venmo_Gateway {
       register_post_type( 'venmo-receipts',
         array(
           'labels' => array(
-              'name' => __( 'Venmo Receipts', WCVENMO_PLUGIN_TEXT_DOMAIN ),
-              'singular_name' => __( 'Venmo Receipt', WCVENMO_PLUGIN_TEXT_DOMAIN )
+              'name' => __( 'Venmo Receipts', 'momo-venmo' ),
+              'singular_name' => __( 'Venmo Receipt', 'momo-venmo' )
           ),
           'public' => false,
           'show_ui' => true,
@@ -33,7 +34,9 @@ class WC_Venmo_Update_Order extends WC_Venmo_Gateway {
     register_rest_route( "wc-{$this->id}/v1", "/update-{$this->id}-order", array(
       'methods' => 'POST',
       "callback" => array( $this, "wc_{$this->id}_emrcpts_order_update"),
-      "permission_callback" => "__return_true",
+      "permission_callback" =>  function() {
+        return current_user_can( 'manage_options' );
+      },
     ) );
   }
 
@@ -217,8 +220,8 @@ class WC_Venmo_Update_Order extends WC_Venmo_Gateway {
     }
 
     if (empty($order)) {
-      // "orderby" => "date", "orderby" => "<" . ( time() - 3600 ), 'date_created' => '>' . ( time() - 3600 ), date_created' => '>' . ( time() - DAY_IN_SECONDS ),// ordered before the last hour
-      $orders = wc_get_orders( ["limit" => 5, "payment_method" => $this->id, 'date_created' => '>' . ( time() - 3600 ), "status" => array("wc-on-hold")] );
+      // "orderby" => "date", "order": "DESC", 'fields' => 'ids', "orderby" => "<" . ( time() - 3600 ), 'date_created' => '>' . ( time() - 3600 ), date_created' => '>' . ( time() - DAY_IN_SECONDS ),// ordered before the last hour
+      $orders = wc_get_orders( ["limit" => 5, "payment_method" => $this->id, "orderby" => "date", "order" => "DESC", "status" => array("wc-on-hold")] );
       // print_r($orders);
       $ordercountmsg = count($orders) . " recent order(s) match(es) your criteria: payment_method: {$this->id}, ordered in the last hour, status: on-hold\n";
       $post_content .= $ordercountmsg;

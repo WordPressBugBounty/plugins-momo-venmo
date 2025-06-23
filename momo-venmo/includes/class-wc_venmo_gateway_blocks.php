@@ -33,7 +33,7 @@ final class WC_Venmo_Gateway_Blocks_Support extends AbstractPaymentMethodType {
         // $script_path       = 'assets/js/frontend/blocks.js';
         // $script_asset_path = WCVENMO_PLUGIN_DIR . 'assets/js/frontend/blocks.asset.php';
         // $script_asset      = file_exists( $script_asset_path ) ? require( $script_asset_path ) : array( 'dependencies' => array(), 'version'      => '1.2.0' );
-        // $script_url        = WCVENMO_PLUGIN_DIR_URL . $script_path;
+        // $script_url        = esc_attr(WCVENMO_PLUGIN_DIR_URL . $script_path);
         // wp_register_script(
         // 	'wc_venmo_gateway_blocks',
         // 	$script_url,
@@ -44,7 +44,7 @@ final class WC_Venmo_Gateway_Blocks_Support extends AbstractPaymentMethodType {
         /* **************************VERSION 2************************** */
         wp_register_script(
             'wc_venmo_gateway_blocks',
-            WCVENMO_PLUGIN_DIR_URL . 'assets/js/frontend/blocks.js',
+            esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/js/frontend/blocks.js'),
             array(
                 'wc-blocks-registry',
                 'wc-settings',
@@ -60,13 +60,13 @@ final class WC_Venmo_Gateway_Blocks_Support extends AbstractPaymentMethodType {
         // wp_register_script_module
         // wp_register_script(
         // 	'wc_venmo_gateway_blocks',
-        // 	WCVENMO_PLUGIN_DIR_URL .  'assets/js/frontend/index.js',
+        // 	esc_attr(WCVENMO_PLUGIN_DIR_URL .  'assets/js/frontend/index.js'),
         // 	array(),
         // 	null, // or time() or filemtime( ... ) to skip caching
         // 	true
         // );
         if ( function_exists( 'wp_set_script_translations' ) ) {
-            wp_set_script_translations( 'wc_venmo_gateway_blocks', WCVENMO_PLUGIN_TEXT_DOMAIN, WCVENMO_PLUGIN_DIR . 'languages/' );
+            wp_set_script_translations( 'wc_venmo_gateway_blocks', 'momo-venmo', WCVENMO_PLUGIN_DIR . 'languages/' );
         }
         return ['wc_venmo_gateway_blocks'];
     }

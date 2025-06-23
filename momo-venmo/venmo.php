@@ -1,37 +1,43 @@
 <?php
 
 /*
-Plugin Name: Checkout with Venmo on Woocommerce
+Plugin Name: Receive customer payments on Woocommerce
 Plugin URI: https://theafricanboss.com/venmo
 Description: The top finance app in the App Store now on WordPress. Receive Venmo payments on your website with WooCommerce + Venmo
 Author: The African Boss
 Author URI: https://theafricanboss.com
-Version: 5.0
+Version: 5.1.3
 Requires PHP: 5.0
 Requires at least: 5.0
-Tested up to: 6.6.1
+Tested up to: 6.8
 WC requires at least: 6.0.0
-WC tested up to: 9.1.4
+WC tested up to: 9.8.5
 Text Domain: momo-venmo
 Domain Path: languages
 Created: 2021
-Copyright 2024 theafricanboss.com All rights reserved
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Copyright 2025 theafricanboss.com All rights reserved
 */
+
 // Reach out to The African Boss for website and mobile app development services at theafricanboss@gmail.com
 // or at www.TheAfricanBoss.com or download our app at www.TheAfricanBoss.com/app
 // If you are using this version, please send us some feedback
 // via email at theafricanboss@gmail.com on your thoughts and what you would like improved
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-}
+if ( !defined( 'ABSPATH' ) ) { exit; }
+
 include_once ABSPATH . 'wp-admin/includes/plugin.php';
-$plugin_data = get_plugin_data( __FILE__ );
+$plugin_data = get_plugin_data(
+    __FILE__,
+    false,
+    /* $translate */
+    false
+ );
 define( 'WCVENMO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WCVENMO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCVENMO_PLUGIN_DIR_URL', plugins_url( '/', __FILE__ ) );
 define( 'WCVENMO_PLUGIN_SLUG', explode( "/", WCVENMO_PLUGIN_BASENAME )[0] );
 define( 'WCVENMO_PLUGIN_VERSION', WCVENMO_PLUGIN_SLUG . '-' . $plugin_data['Version'] );
-define( 'WCVENMO_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 define( 'WCVENMO_UPGRADE_URL', 'https://theafricanboss.com/freemius/wc-venmo' );
 if ( function_exists( 'venmo_fs' ) ) {
     venmo_fs()->set_basename( false, __FILE__ );
@@ -58,6 +64,7 @@ if ( function_exists( 'venmo_fs' ) ) {
                     'premium_suffix' => 'PRO',
                     'has_addons'     => false,
                     'has_paid_plans' => true,
+                    'is_org_compliant' => true,
                     'trial'          => array(
                         'days'               => 3,
                         'is_require_payment' => true,
@@ -94,8 +101,8 @@ if ( function_exists( 'venmo_fs' ) ) {
         require_once WCVENMO_PLUGIN_DIR . 'includes/notifications/woocommerce.php';
     }
     // translations
-    add_action( 'plugins_loaded', function () {
-        load_plugin_textdomain( WCVENMO_PLUGIN_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    add_action( 'init', function () {
+        load_plugin_textdomain( 'momo-venmo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     } );
     if ( is_admin() ) {
         add_action( 'plugin_action_links_' . WCVENMO_PLUGIN_BASENAME, function ( $links ) {
@@ -103,15 +110,18 @@ if ( function_exists( 'venmo_fs' ) ) {
             array_unshift( $links, $settings_link );
             global $venmo_fs;
             $upgrade_url = venmo_fs()->get_upgrade_url();
-            $links['wc_venmo_pro'] = sprintf( '<a href="' . $upgrade_url . '" style="color: #39b54a; font-weight: bold;">' . esc_html__( 'Upgrade', WCVENMO_PLUGIN_TEXT_DOMAIN ) . '</a>' );
+            $links['wc_venmo_pro'] = sprintf( '<a href="' . $upgrade_url . '" style="color: #39b54a; font-weight: bold;">' . esc_html__( 'Upgrade', 'momo-venmo' ) . '</a>' );
             return $links;
         } );
         add_action( 'admin_enqueue_scripts', function () {
             $currentScreen = get_current_screen();
             // var_dump($currentScreen);
             if ( strpos( $currentScreen->id, 'momo_venmo' ) !== false || strpos( $currentScreen->id, 'momo-venmo' ) !== false || strpos( $currentScreen->id, 'wc_venmo' ) !== false || strpos( $currentScreen->id, 'wc-venmo' ) !== false ) {
-                wp_register_style( 'wcvenmo_bootstrap', WCVENMO_PLUGIN_DIR_URL . 'assets/css/bootstrap.min.css' );
-                wp_enqueue_style( 'wcvenmo_bootstrap' );
+                $bootstrap = 'bootstrap';
+                if ( !wp_style_is( $bootstrap, 'enqueued' ) ) {
+                    wp_register_style( $bootstrap, WCCASHAPP_PLUGIN_DIR_URL . "assets/css/{$bootstrap}.min.css" );
+                    wp_enqueue_style( $bootstrap );
+                }
             } else {
                 return;
             }

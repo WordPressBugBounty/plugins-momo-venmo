@@ -1,25 +1,28 @@
-=== Checkout with Venmo on Woocommerce ===
-Contributors: theafricanboss, freemius
+=== Receive customer payments on Woocommerce ===
+Contributors: theafricanboss
 Donate Link: https://gurastores.com/get-cash
 Tags: venmo,paypal,woocommerce,payments,money transfer
-Stable tag: 5.0
+Stable tag: 5.1.3
 Requires PHP: 5.0
 Requires at least: 5.0
-Tested up to: 6.6.1
+Tested up to: 6.8
 WC requires at least: 6.0.0
-WC tested up to: 9.1.4
+WC tested up to: 9.8.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-The top finance app in the App Store now available on WordPress. Receive Venmo payments on your website with WooCommerce + Venmo
+Receive Venmo payments on your website with WooCommerce + Venmo
 
 == Description ==
 
 **HPOS compatibility & WooCommerce Blocks support**
+**Unlock more great features for you and your customers and priority support with a PRO license. [Upgrade](https://theafricanboss.com/venmo)**
 
-Checkout with Venmo on Woocommerce is a plugin that allows you to receive Venmo payments on your website with WooCommerce.
+Receive customer payments on Woocommerce is a plugin that allows you to receive Venmo payments on your website with WooCommerce.
 This plugin comes with 2 payment methods for Venmo. One requires a PayPal business account and the other requires a Venmo account.
 You can activate both or just one of them depending on your needs and eligibility.
+
+**Disclaimer:** We are not affiliated with, endorsed by, sponsored by, or in any official partnership with Venmo or PayPal. The use of their name, trademark, and branding is solely for the purpose of providing a convenient way for users to make payments through Venmo. All rights to the name, trademark, and branding of Venmo are owned by PayPal.
 
 = More information =
 
@@ -40,6 +43,29 @@ This plugin displays a Venmo link
 
 See the screenshots or the store example of [Gura Stores](https://gurastores.com/test/) for visual details.
 
+== External services ==
+
+This plugin integrates with the [PayPal REST APIs](https://developer.paypal.com/api/rest/) and the [PayPal JavaScript SDK](https://developer.paypal.com/sdk/js/) to process Venmo payments and order refunds in accordance with the [Pay with Venmo documentation](https://developer.paypal.com/docs/checkout/pay-with-venmo/integrate/).
+This integration is optional and has to be set/connected in the plugin settings.
+This service is provided by PayPal: [terms of use](https://www.paypal.com/us/legalhub/paypal/home), [privacy policy](https://www.paypal.com/us/webapps/mpp/ua/privacy-full).
+
+This plugin offers an optional integration with [emailreceipts.io](https://emailreceipts.io) to obtain Venmo transactions data received from the Venmo transaction receipts and to process order statuses automatically.
+It sends the payment data every time a Venmo transaction is received, and updates the order status in WooCommerce accordingly.
+This integration is optional and has to be set/connected in the plugin settings.
+This service is provided by The African Boss LLC: [terms of use](https://theafricanboss.com/terms-and-conditions/), [privacy policy](https://theafricanboss.com/privacy-policy/).
+
+= Disclaimer Regarding Use of Name, Trademark, and Branding of Venmo =
+
+This plugin is not affiliated with, endorsed by, or in any way associated or partnered with Venmo or PayPal. The use of their name, trademark, and branding is solely for the purpose of providing a convenient way for users to make payments through Venmo. All rights to the name, trademark, and branding of Venmo are owned by PayPal.
+The plugin does not claim any ownership or rights to the name, trademark, or branding.
+
+Venmo Marks are solely used in connection with advertising and marketing our Venmo-enabled Services and in accordance with Venmo’s Branding Requirements, the PayPal Developer Agreement.
+
+The plugin is provided "as is" and the developers are not responsible for any issues or disputes that may arise from the use of the name, trademark, or branding.
+By using this plugin, you acknowledge and agree that you are solely responsible for your use of Venmo and that you will comply with all applicable laws and regulations, and all [applicable terms and conditions of Venmo and PayPal](https://venmo.com/legal/us-user-agreement/).
+
+If you are a representative of Venmo or any other rights holder and believe that any content in this plugin violates your intellectual property rights or misrepresents an affiliation, please contact us at info@theafricanboss.com and we will promptly address the issue.
+
 == Screenshots ==
 
 1. Checkout page view for customers using the Venmo Link payment method enabled.
@@ -54,13 +80,13 @@ See the screenshots or the store example of [Gura Stores](https://gurastores.com
 = From Dashboard ( WordPress admin ) =
 
 - Go to Plugins -> Add New
-- Search for ‘Checkout with Venmo on Woocommerce’
+- Search for ‘Receive customer payments on Woocommerce’
 - Click on Install Now
 - Activate the plugin through the “Plugins” menu in WordPress.
 
 = Using cPanel or FTP =
 
-- Download ‘Checkout with Venmo on Woocommerce’ from [The African Boss](https://theafricanboss.com/venmo)
+- Download ‘Receive customer payments on Woocommerce’ from [The African Boss](https://theafricanboss.com/venmo)
 - Unzip momo-venmo.zip’ file and
 - Upload momo-venmo folder to the “/wp-content/plugins/” directory.
 - Activate the plugin through the “Plugins” menu in WordPress.
@@ -79,14 +105,12 @@ Also _you can visit_ the [plugin page](https://theafricanboss.com/venmo) for fur
 
 = Venmo Link Vs. Pay with Venmo =
 
-The major difference between the two payment methods is that Venmo Link is a link to your Venmo @username (e.g venmo.com/username) while Pay with Venmo is the official integration by PayPal that needs to be set up with your PayPal account.
+The major difference between the two payment methods is that Venmo Link is a link to your Venmo @username (e.g venmo.com/username) while Pay with Venmo is an unofficial integration of the PayPal API that needs to be set up with your PayPal account.
 Notice that Pay with Venmo requires a PayPal business developer account while Venmo Link requires a Venmo account.
-
-Check out the full side-by-side comparison table at [The African Boss](https://paypal.theafricanboss.com)
 
 = Does this Venmo plugin integrate with the payment APIs? =
 
-Yes, Venmo integrates the official Pay with Venmo end-to-end payment by PayPal since v4.0.
+Yes, Venmo integrates an unofficial Pay with Venmo end-to-end payment through the PayPal API since v4.0.
 
 Also there is an extra payment method added that provides a quick and easy way to display to your customers your Venmo @username and to link them to it.
 It only displays your Venmo @username to the customer and redirects them to it so that the off site Venmo transaction can take place.
@@ -107,7 +131,7 @@ If you do not want to use emailreceipts.io, you will have to manually update the
 
 **Premium Support**
 
-Users with a valid Checkout with Venmo on Woocommerce PRO license receive Priority Support, directly from the plugin developer! [Find out more!](https://theafricanboss.com/venmo)
+Users with a valid Receive customer payments on Woocommerce PRO license receive Priority Support, directly from the plugin developer! [Find out more!](https://theafricanboss.com/venmo)
 
 **Community Support for users of the Free version**
 
@@ -129,13 +153,24 @@ After activating the plugin, add your Venmo information such as your Venmo, Venm
 
 == Upgrade Notice ==
 
-= 5.0 =
-This update is a major upgrade, enhancement, compatibility release. Updating is highly recommended.
-
-= 4.2 =
+= 5.1 =
 This update is a security, stability, maintenance, and compatibility release. Updating is highly recommended.
 
 == Changelog ==
+
+- Using wp_remote for the PayPal customers/payments/refunds API
+- Using PayPal Payments API & Refunds API & Customer API for Venmo Pay
+- Now processing payments and refunds with the PayPal API
+- Improved WC_Venmo_Cashapp class methods, html, and error displays
+- Added saving additional order meta_data (ppr_id,ppr_status,ppr_order_id)
+
+= 5.1 May 15, 2025 =
+- Refactored code across plugin for better performance
+- Added blueprint.json to the plugin
+- Fixed [E_DEPRECATED] Creation of dynamic property with AllowDynamicProperties
+- Fixed wc_get_orders matching orders for processing in wc_venmo_find_venmo_order
+- Fixed load_plugin_textdomain was called incorrectly error with init load_plugin_textdomain and get_plugin_data fix
+- Updated Freemius, Woocommerce and Wordpress compatibility
 
 = 5.0 Aug 1, 2024 =
 
@@ -146,12 +181,6 @@ This update is a security, stability, maintenance, and compatibility release. Up
 - checkout_html, thankyou_html, email_html variables
 - Introduced qrcode_styling to the free version
 - Updated Freemius, Woocommerce and Wordpress compatibility
-
-- Using wp_remote for the PayPal customers/payments/refunds API
-- Using PayPal Payments API & Refunds API & Customer API for Venmo Pay
-- Now processing payments and refunds with the PayPal API
-- Improved WC_Venmo_Cashapp class methods, html, and error displays
-- Added saving additional order meta_data (ppr_id,ppr_status,ppr_order_id)
 
 = 4.2 Aug 15, 2023 =
 
@@ -286,7 +315,7 @@ Added setup plugin link to wp_die when upgrading from free to PRO plugin
 = 1.1 June 15, 2021 =
 - Added wp_die to deactivate plugin when the PRO version is active
 - Emails will be sent with the note from now on only if the order is still on-hold
-- Name change from 'MOMO Venmo' to 'Checkout with Venmo on Woocommerce'
+- Name change from 'MOMO Venmo' to 'Receive customer payments on Woocommerce'
 - Updated links of assets in recommended and tutorials links
 
 = 1.0 May 15, 2021 =

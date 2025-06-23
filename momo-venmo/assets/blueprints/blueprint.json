@@ -1,0 +1,27 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"login": true,
+	"siteOptions": {
+		"blogname": "Test Receive customer payments on Woocommerce",
+		"blogdescription": "Checkout with Venmo"
+	},
+	"landingPage": "/checkout/?add-to-cart=15",
+	"plugins": ["woocommerce", "momo-venmo"],
+	"steps": [
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "url",
+				"url": "https://plugins.svn.wordpress.org/woocommerce/trunk/sample-data/sample_products.xml"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once 'wordpress/wp-load.php'; update_option( 'woocommerce_onboarding_profile', array( 'skipped' => true ) ); ?>"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once 'wordpress/wp-load.php'; update_option( 'woocommerce_venmo_settings', array( 'enabled' => 'yes', 'ReceiverVenmo' => 'username', 'ReceiverVenmoOwner' => 'Business Inc' ) ); ?>"
+		}
+	]
+}

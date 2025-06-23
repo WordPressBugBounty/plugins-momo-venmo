@@ -26,7 +26,7 @@
                 <iframe width="100%" height="215" src="https://www.youtube.com/embed/Deacc5qDJyk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <div class="card-body">
                     <h5 class="card-title">Venmo WordPress Plugin for Woocommerce - Checkout on your store with Venmo</h5>
-                    <p class="card-text">Checkout with Venmo on Woocommerce is a WordPress plugin that helps your customers pay you using Venmo. MOMO displays your Venmo username to customers who would like to pay you using Venmo. You get notified of the order on hold until you the money is sent to your Venmo so you can provide the services or products ordered.</p>
+                    <p class="card-text">Receive customer payments on Woocommerce is a WordPress plugin that helps your customers pay you using Venmo. MOMO displays your Venmo username to customers who would like to pay you using Venmo. You get notified of the order on hold until you the money is sent to your Venmo so you can provide the services or products ordered.</p>
                     <a href="https://youtu.be/Deacc5qDJyk" class="btn btn-danger" target="_blank">Subscribe to our Youtube channel</a>
                 </div>
             </div>

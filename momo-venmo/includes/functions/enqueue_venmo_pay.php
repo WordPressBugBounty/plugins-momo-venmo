@@ -13,7 +13,7 @@ if ( is_checkout() ) {
     $paypal_web = "https://www.paypal.com/sdk/js?currency=USD&integration-date=2022-04-13&components=buttons,funding-eligibility&vault=false&commit=false&intent=authorize&disable-funding=card,credit,paylater&enable-funding=venmo&debug=$debug&client-id=$CLIENT_ID";
     wp_enqueue_script( 'wc_venmo_pay_paypal_web', $paypal_web, array(), null, false );
 
-    wp_enqueue_script( 'wc_venmo_pay_paypal', WCVENMO_PLUGIN_DIR_URL . 'assets/js/paypal.js', array( 'jquery', 'wc_venmo_pay_paypal_web' ), null, true );
+    wp_enqueue_script( 'wc_venmo_pay_paypal', esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/js/paypal.js'), array( 'jquery', 'wc_venmo_pay_paypal_web' ), null, true );
 
     global $woocommerce;
     $cart = $woocommerce->cart;
@@ -64,7 +64,7 @@ if ( is_checkout() ) {
     global $wp;
     wp_localize_script( 'wc_venmo_pay_paypal', 'wc_venmo_pay_object',
         array(
-            'isPro' => venmo_fs()->is_plan__premium_only('pro') ? true : false,
+            'isPro' => false,
             'checkout_url' => get_permalink( get_the_ID() ),
             'checkout_url2' => home_url( $wp->request ),
             'amount' => $amount,
@@ -84,10 +84,10 @@ if ( is_checkout() ) {
 
     $spinner_css = 'spinner.css';
     if (! wp_script_is( $spinner_css, 'enqueued' )) {
-        wp_register_style( $spinner_css, WCVENMO_PLUGIN_DIR_URL . 'assets/css/' . $spinner_css );
+        wp_register_style( $spinner_css, esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/css/' . $spinner_css) );
         wp_enqueue_style ( $spinner_css );
         // $spinner_ver = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'assets/css/spinner.css' ));
-        // wp_register_style( 'wc_venmo_pay_spinner', WCVENMO_PLUGIN_DIR_URL . 'assets/css/spinner.css' );
+        // wp_register_style( 'wc_venmo_pay_spinner', esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/css/spinner.css') );
         // wp_enqueue_style ( 'wc_venmo_pay_spinner' );
     }
 }

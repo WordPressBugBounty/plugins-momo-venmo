@@ -4,14 +4,13 @@
     <div class="container">
         <h1>Pay with Venmo vs. Venmo Link</h1>
         <p><strong><em>Checkout with Venmo</em></strong> is a WordPress plugin that helps your customers pay you using Pay with Venmo.</p>
-        <p class="d-none"><a class="btn btn-primary" role="button" href="https://paypal.theafricanboss.com" target="_blank">Go to paypal.theafricanboss.com for updates</a></p>
         <p><strong><em>Checkout with Venmo</em> plugin comes with 2 payment methods</strong>. Enable one of them based on the features you need.</p>
         <p>Here is how the checkout page looks like for both</p>
 
         <div class="">
-            <img class="shadow" src="<?php echo (WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_pay_checkout.jpg'); ?>" width="50%" height="auto" alt="Venmo on the checkout page" />
+            <img class="shadow" src="<?php echo esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_pay_checkout.jpg'); ?>" width="50%" height="auto" alt="Venmo on the checkout page" />
             <p>Pay with Venmo example above</p>
-            <img class="shadow" src="<?php echo (WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_checkout.jpg'); ?>" width="50%" height="auto" alt="Venmo Link on the checkout page" />
+            <img class="shadow" src="<?php echo esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_checkout.jpg'); ?>" width="50%" height="auto" alt="Venmo Link on the checkout page" />
             <p>Venmo Link example above</p>
         </div>
 
@@ -33,7 +32,7 @@
                 </thead>
                 <tbody>
                     <tr class="feature-row">
-                        <td>Official PayPal Integration<br /></td>
+                        <td>PayPal API Integration<br /></td>
                         <td class="text-center feature-option">✔</td>
                         <td class="text-center feature-option">x</td>
                     </tr>

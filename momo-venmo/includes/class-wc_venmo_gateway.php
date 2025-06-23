@@ -8,7 +8,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
         public function __construct() {
             $this->id = 'venmo';
             // payment gateway plugin ID
-            $this->icon = WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_35.png';
+            $this->icon = esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_35.png');
             // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             // in case you need a custom form
@@ -20,7 +20,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
             global $venmo_fs;
             $upgrade_url = venmo_fs()->get_upgrade_url();
             $this->method_description .= '<p>Unlock the NEW design for <a href="' . $upgrade_url . '">Venmo Link PRO</a></p>
-				<a href="' . $upgrade_url . '"><img class="shadow" src="' . WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo_checkout.jpg' . '" width="auto" height="200" alt="Venmo Link on the checkout page" /></a>';
+				<a href="' . $upgrade_url . '"><img class="shadow" src="' . esc_attr(WCVENMO_PLUGIN_DIR_URL . 'assets/images/v_checkout.jpg') . '" width="auto" height="200" alt="Venmo Link on the checkout page" /></a>';
             $this->init_settings();
             $this->enabled = $this->get_option( 'enabled' );
             $this->title = ( $this->get_option( 'checkout_title' ) ? $this->get_option( 'checkout_title' ) : $this->method_title );
@@ -57,7 +57,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
             $default_checkout_description = '<p>Please <strong>use your Order Number (available once you place order)</strong> as the payment reference.</p>';
             $default_venmo_notice = "<p>We are checking our systems to confirm that we received. If you haven't sent the money already, please make sure to do so now.</p>" . '<p>Once confirmed, we will proceed with the shipping and delivery options you chose.</p>' . '<p>Thank you for doing business with us! You will be updated regarding your order details soon.</p>';
             $default_store_instructions = "Please send the total amount requested to our store if you haven't yet";
-            $default_order_note = esc_html__( 'Your order was received!', WCVENMO_PLUGIN_TEXT_DOMAIN ) . '<br><br>' . sprintf( __( 'We are checking our Venmo to confirm that we received the %s you sent so we can start processing your order.', WCVENMO_PLUGIN_TEXT_DOMAIN ), '<strong>**order_total**</strong>' ) . '<br><br>' . esc_html__( 'Thank you for doing business with us', WCVENMO_PLUGIN_TEXT_DOMAIN ) . '!<br> ' . esc_html__( 'You will be updated regarding your order details soon', WCVENMO_PLUGIN_TEXT_DOMAIN ) . '<br><br>' . esc_html__( 'Kindest Regards', WCVENMO_PLUGIN_TEXT_DOMAIN ) . ',<br>**shop_name**<br>**shop_email**<br>**shop_url**<br>';
+            $default_order_note = esc_html__( 'Your order was received!', 'momo-venmo' ) . '<br><br>' . sprintf( __( 'We are checking our Venmo to confirm that we received the %s you sent so we can start processing your order.', 'momo-venmo' ), '<strong>**order_total**</strong>' ) . '<br><br>' . esc_html__( 'Thank you for doing business with us', 'momo-venmo' ) . '!<br> ' . esc_html__( 'You will be updated regarding your order details soon', 'momo-venmo' ) . '<br><br>' . esc_html__( 'Kindest Regards', 'momo-venmo' ) . ',<br>**shop_name**<br>**shop_email**<br>**shop_url**<br>';
             // upgrade display_venmo
             if ( $this->display_venmo === 'no' ) {
                 $this->update_option( 'display_venmo', '1' );
@@ -286,9 +286,9 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                 return '';
             }
             $payment_url = "https://venmo.com/{$this->ReceiverVenmo}?txn=pay";
-            $domain = ( !empty( parse_url( get_bloginfo( 'url' ) ) ) ? parse_url( get_bloginfo( 'url' ) )['host'] : null );
+            $domain = ( !empty( wp_parse_url( get_bloginfo( 'url' ) ) ) ? wp_parse_url( get_bloginfo( 'url' ) )['host'] : null );
             if ( !empty( $amount ) && $amount != '0' ) {
-                $venmo_note = sprintf( esc_html__( 'Order from %s', WCVENMO_PLUGIN_TEXT_DOMAIN ), $domain );
+                $venmo_note = sprintf( esc_html__( 'Order from %s', 'momo-venmo' ), $domain );
                 $payment_url .= "&amount={$amount}&note={$venmo_note}";
             } else {
                 $payment_url .= "&note=Thank you";
@@ -311,32 +311,14 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
             if ( empty( $qr_code_url ) || empty( $payment_url ) ) {
                 return '';
             }
-            $qrcode_html = '<p class="wc-venmo">' . esc_html__( 'Click', WCVENMO_PLUGIN_TEXT_DOMAIN ) . ' >
-				<a href="' . $payment_url . '" target="_blank"><img width="150" height="150" class="logo-qr" alt="' . $this->method_title . ' Link" src="' . esc_attr( WCVENMO_PLUGIN_DIR_URL . 'assets/images/venmo.png' ) . '"></a> ' . esc_html__( 'or Scan', WCVENMO_PLUGIN_TEXT_DOMAIN ) . ' > <a href="' . $payment_url . '" target="_blank"><img width="150" height="150" class="logo-qr" alt="' . $this->method_title . ' Link" src="' . $qr_code_url . '"></a></p>';
+            $qrcode_html = '<p class="wc-venmo">' . esc_html__( 'Click', 'momo-venmo' ) . ' >
+				<a href="' . $payment_url . '" target="_blank"><img width="150" height="150" class="logo-qr" alt="' . $this->method_title . ' Link" src="' . esc_attr( WCVENMO_PLUGIN_DIR_URL . 'assets/images/v.png' ) . '"></a> ' . esc_html__( 'or Scan', 'momo-venmo' ) . ' > <a href="' . $payment_url . '" target="_blank"><img width="150" height="150" class="logo-qr" alt="' . $this->method_title . ' Link" src="' . $qr_code_url . '"></a></p>';
             return wp_kses_post( $qrcode_html );
         }
 
         // wc_add_notice & log
         // protected function wcv_woo_notice( $message, $status = 'error', $level = 'info' ) {}
-        protected function wcv_log( $message, $level = 'info' ) {
-            // logs at admin.php?page=wc-status&tab=logs
-            if ( !empty( $message ) && $this->enable_debug == 'yes' && venmo_fs()->is_plan__premium_only( 'pro' ) ) {
-                $logger = wc_get_logger();
-                // $logger->debug( 'Detailed debug information', $context );
-                // $logger->info( 'Interesting events', $context );
-                // $logger->notice( 'Normal but significant events', $context );
-                // $logger->warning( 'Exceptional occurrences that are not errors', $context );
-                // $logger->error( 'Runtime errors that do not require immediate', $context );
-                // $logger->critical( 'Critical conditions', $context );
-                // $logger->alert( 'Action must be taken immediately', $context );
-                // $logger->emergency( 'System is unusable', $context );
-                // // $context may hold arbitrary data.
-                // // If you provide a "source", it will be used to group your logs
-                $logger->log( $level, wp_strip_all_tags( wp_kses_post( $message ) ), array(
-                    'source' => $this->id,
-                ) );
-            }
-        }
+        protected function wcv_log( $message, $level = 'info' ) { return; }
 
         // /**
         //  * Check if this gateway is available in the user's country based on currency.
@@ -395,21 +377,28 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
 
         // validate venmo_username
         public function validate_fields() {
-            if ( isset( $_POST['venmo_username'] ) ) {
-                $accountid_meta = sanitize_text_field( trim( $_POST['venmo_username'] ) );
-                if ( !$accountid_meta || strlen( $accountid_meta ) < 3 ) {
-                    wc_add_notice( esc_html( __( 'Invalid Venmo @username', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
-                    $this->wcv_log( "Checkout: A customer Venmo {$accountid_meta} is invalid", 'error' );
-                }
+            if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
+                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
             }
             if ( isset( $_POST['do_not_checkout'] ) ) {
-                wc_add_notice( esc_html( __( 'Please try another payment method', WCVENMO_PLUGIN_TEXT_DOMAIN ) ), 'error' );
+                wc_add_notice( esc_html( __( 'Please try another payment method', 'momo-venmo' ) ), 'error' );
                 $this->wcv_log( "Checkout: A customer tried {$this->method_title} while it is not yet fully set up by the admin and was advised to try another payment method", 'error' );
+            }
+            if ( isset( $_POST['venmo_username'] ) ) {
+                $accountid_meta = esc_html(sanitize_text_field( trim( wp_unslash($_POST['venmo_username']) ) ));
+                // No nonce check was found validating the origin of inputs in the lines 397-399 - in the context of the classMethod WC_Venmo_Gateway::validate_fields()
+                if ( !$accountid_meta || strlen( $accountid_meta ) < 3 ) {
+                    wc_add_notice( esc_html( __( 'Invalid Venmo @username', 'momo-venmo' ) ), 'error' );
+                    $this->wcv_log( "Checkout: A customer Venmo {$accountid_meta} is invalid", 'error' );
+                }
             }
         }
 
         // Process Order
         public function process_payment( $order_id ) {
+            if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
+                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
+            }
             try {
                 if ( !$order_id ) {
                     wc_add_notice( '<p>Something went terribly wrong.</p><p>Order information is missing</p>', 'error' );
@@ -423,29 +412,16 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
                 }
                 if ( !is_wp_error( $order ) && $this->id === $order->get_payment_method() ) {
                     if ( isset( $_POST['venmo_username'] ) ) {
-                        $accountid_meta = sanitize_text_field( trim( $_POST['venmo_username'] ) );
+                        $accountid_meta = esc_html(sanitize_text_field( trim( wp_unslash($_POST['venmo_username']) ) ));
                         if ( $accountid_meta ) {
                             $order->update_meta_data( 'venmo_username', $accountid_meta );
                             $order->save();
                         }
                     }
                     global $venmo_fs;
-                    if ( venmo_fs()->is_plan__premium_only( 'pro' ) && $this->VenmoStockManagement == 'yes' ) {
-                    } else {
-                        // reduce inventory
-                        $order->reduce_order_stock();
-                    }
-                    // Mark as on-hold (we're awaiting the payment).
-                    if ( venmo_fs()->is_plan__premium_only( 'pro' ) && $this->processOrder == 'yes' ) {
-                        $order->reduce_order_stock();
-                        $order->payment_complete();
-                    } else {
-                        // Mark as on-hold (we're awaiting the payment).
-                        $order->update_status( apply_filters( "woocommerce_{$this->id}_process_payment_order_status", 'on-hold', $order ), __( "Waiting for the {$this->method_title} payment", WCVENMO_PLUGIN_TEXT_DOMAIN ) );
-                    }
-                    if ( venmo_fs()->is_plan__premium_only( 'pro' ) && 'yes' == $this->enableNote ) {
-                        require_once WCVENMO_PLUGIN_DIR . 'includes/notifications/note.php';
-                    }
+                    $order->reduce_order_stock();
+                    $order->update_status( apply_filters( "woocommerce_{$this->id}_process_payment_order_status", 'on-hold', $order ), esc_html__( "Waiting for a Venmo payment", 'momo-venmo' ) );
+
                     global $woocommerce;
                     $woocommerce->cart->empty_cart();
                     // Redirect to the thank you page

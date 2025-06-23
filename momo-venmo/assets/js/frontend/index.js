@@ -66,7 +66,7 @@ const Label = (props) => {
 // 	);
 // };
 
-const Venmo = {
+const PaymMethod = {
 	name: "venmo",
 	label: <Label />,
 	content: <Content />,
@@ -77,7 +77,7 @@ const Venmo = {
 		features: settings.supports,
 	},
 };
-// const Venmo = {
+// const PaymMethod = {
 // 	name: "venmo",
 // 	label: Label,
 // 	content: Content,
@@ -89,4 +89,4 @@ const Venmo = {
 // 	},
 // };
 
-registerPaymentMethod(Venmo);
+registerPaymentMethod(PaymMethod);

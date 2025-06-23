@@ -99,7 +99,7 @@ function wcvenmo_admin_menu() {
         'Review VENMO',
         'Review',
         $capability,
-        'https://wordpress.org/support/plugin/momo-venmo/reviews/?filter=5',
+        'https://wordpress.org/support/plugin/momo-venmo/reviews/',
         null,
         null
     );
@@ -164,7 +164,7 @@ function wc_venmo_pay_admin_menu() {
         'Review Venmo Pay',
         'Review',
         $capability,
-        'https://wordpress.org/support/plugin/momo-venmo/reviews/?filter=5',
+        'https://wordpress.org/support/plugin/momo-venmo/reviews/',
         null,
         null
     );
