@@ -6,7 +6,7 @@ Plugin URI: https://theafricanboss.com/venmo
 Description: The top finance app in the App Store now on WordPress. Receive Venmo payments on your website with WooCommerce + Venmo
 Author: The African Boss
 Author URI: https://theafricanboss.com
-Version: 5.1.3
+Version: 5.1.4
 Requires PHP: 5.0
 Requires at least: 5.0
 Tested up to: 6.8

@@ -2,7 +2,7 @@
 Contributors: theafricanboss
 Donate Link: https://gurastores.com/get-cash
 Tags: venmo,paypal,woocommerce,payments,money transfer
-Stable tag: 5.1.3
+Stable tag: 5.1.4
 Requires PHP: 5.0
 Requires at least: 5.0
 Tested up to: 6.8

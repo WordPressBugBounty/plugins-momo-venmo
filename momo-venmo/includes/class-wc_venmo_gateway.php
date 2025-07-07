@@ -378,7 +378,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
         // validate venmo_username
         public function validate_fields() {
             if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
-                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
+                // wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
             }
             if ( isset( $_POST['do_not_checkout'] ) ) {
                 wc_add_notice( esc_html( __( 'Please try another payment method', 'momo-venmo' ) ), 'error' );
@@ -397,7 +397,7 @@ if ( class_exists( 'WC_Payment_Gateway' ) ) {
         // Process Order
         public function process_payment( $order_id ) {
             if ( ! isset( $_POST['woocommerce-process-checkout-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ), 'woocommerce-process_checkout' ) ) {
-                wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
+                // wc_add_notice( esc_html( __( 'There was a nonce verification processing your request. Please try again.', 'momo-venmo' ) ), 'error' );
             }
             try {
                 if ( !$order_id ) {
